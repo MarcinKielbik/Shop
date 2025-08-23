@@ -6,22 +6,24 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class CartService {
-
   private storageKey = 'cart';
   private cartSubject = new BehaviorSubject<CartItem[]>(this.loadFromStorage());
+  cart$ = this.cartSubject.asObservable();
 
-
-  cart$ = this.cartSubject = new BehaviorSubject<CartItem[]>(this.loadFromStorage());
-
-  constructor() { }
+  constructor() {}
 
   private loadFromStorage(): CartItem[] {
+    if (typeof window === 'undefined' || !window.localStorage) {
+      return []; // SSR lub brak localStorage
+    }
     const data = localStorage.getItem(this.storageKey);
     return data ? JSON.parse(data) : [];
   }
 
   private saveToStorage(cart: CartItem[]) {
-    localStorage.setItem(this.storageKey, JSON.stringify(cart));
+    if (typeof window !== 'undefined' && window.localStorage) {
+      localStorage.setItem(this.storageKey, JSON.stringify(cart));
+    }
   }
 
   addToCart(item: CartItem) {
@@ -46,7 +48,8 @@ export class CartService {
 
   clearCart() {
     this.cartSubject.next([]);
-    localStorage.removeItem(this.storageKey);
+    if (typeof window !== 'undefined' && window.localStorage) {
+      localStorage.removeItem(this.storageKey);
+    }
   }
-
 }

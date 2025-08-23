@@ -9,10 +9,11 @@ export class ProductService {
 
 
   private products: Product[] = [
-    {id: 1, title: 'Laptop', price: 3800},
-    {id: 1, title: 'Phone', price: 2900},
-    {id: 1, title: 'Headphones', price: 230},
-  ];
+  { id: 1, title: 'Laptop', price: 3800 },
+  { id: 2, title: 'Phone', price: 2900 },
+  { id: 3, title: 'Headphones', price: 230 }
+];
+
 
   constructor() { }
 
