@@ -11,7 +11,8 @@ import { ProductService } from '../../services/product.service';
 export class ProductListComponent {
 products: Product[] = [];
 
-  constructor(private cartService: CartService, private productService: ProductService) {}
+  constructor(private cartService: CartService, 
+    private productService: ProductService) {}
 
   ngOnInit() {
     this.productService.getProducts().subscribe(products => {
@@ -20,10 +21,12 @@ products: Product[] = [];
   }
 
   addToCart(product: Product) {
-    this.cartService.addToCart({
-      productId: product.id, quantity: 1,
-      title: '',
-      price: 0
-    });
-  }
+  this.cartService.addToCart({
+    productId: product.id,
+    quantity: 1,
+    title: product.title,
+    price: product.price
+  });
+}
+
 }
