@@ -9,5 +9,21 @@ import { ProductService } from '../../services/product.service';
   styleUrl: './product-list.component.scss'
 })
 export class ProductListComponent {
+products: Product[] = [];
 
+  constructor(private cartService: CartService, private productService: ProductService) {}
+
+  ngOnInit() {
+    this.productService.getProducts().subscribe(products => {
+      this.products = products;
+    });
+  }
+
+  addToCart(product: Product) {
+    this.cartService.addToCart({
+      productId: product.id, quantity: 1,
+      title: '',
+      price: 0
+    });
+  }
 }
